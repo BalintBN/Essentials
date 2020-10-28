@@ -1,3 +1,13 @@
+#(c) copyright 2020 - 2023 BalintEssentials
+#By: M.Balint
+import os
+import discord
+import json
+from discord.ext import commands
+
+bot = commands.Bot(command_prefix = '~')
+token = 'NzMxMTAxMzU2MzgzMDEwODE3.XwnFDg.AZTHITTEDMI?!'
+
 os.chdir("/home/pi/bot")
 
 @bot.command(aliases=["bal"])

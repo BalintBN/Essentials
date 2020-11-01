@@ -50,7 +50,6 @@ async def get_bank_data():
 
 
 @bot.command()
-@commands.has_permissions(ban_members=True)
 async def add_money(ctx ,member:discord.Member, amount):
     await open_account(ctx.author)
     await open_account(member)
@@ -65,53 +64,5 @@ async def add_money(ctx ,member:discord.Member, amount):
 
     await ctx.send(amount +"$ hozzáadva " + member.mention + " pénztárcájához.")  
 
-@add_money.error
-import os
-import discord
-import json
-from discord.ext import commands
-
-bot = commands.Bot(command_prefix = '~')
-token = 'NzMxMTAxMzU2MzgzMDEwODE3.XwnFDg.AZTHITTEDMI?!'
-
-async def add_money_error(ctx, error):
-    emoji = discord.utils.get(bot.emojis, name="x_")
-    if isinstance(error, MissingPermissions):
-        await ctx.send(f"{str(emoji)} Nincs hozzá jogod!")
-    if isinstance(error, MissingRequiredArgument):
-        embed=discord.Embed(title="Helytelen használat!",description="Helyes használat: `~add_money [felhasználó említés] (mennyiség)`" ,color=discord.Colour.red(),timestamp=datetime.datetime.utcnow()
-    )
-        embed.set_author(name="BalintEssentials",url="https://balintcore.tk",icon_url="https://cdn.discordapp.com/avatars/731101356383010817/db6c1448ff41844a95374a7b357797d9.png?size=256")
-        embed.set_footer(text="BalintEssentials - Hiba", icon_url="https://cdn.discordapp.com/avatars/731101356383010817/db6c1448ff41844a95374a7b357797d9.png?size=256")
-        await ctx.send(embed=embed)
-        
-
-@bot.command()
-@commands.has_permissions(ban_members=True)
-async def rem_money(ctx ,member:discord.Member, amount):
-    await open_account(ctx.author)
-    await open_account(member)
-    user = ctx.author
-    users = await get_bank_data()
-
-    
-    users[str(member.id)]["money"] -= int(amount)
-
-    with open("bank.json","w") as f:
-        json.dump(users,f)
-
-    await ctx.send(amount +"$ elvéve " + member.mention + " pénztárcájábol.") 
-
-@rem_money.error
-async def rem_money_error(ctx, error):
-    emoji = discord.utils.get(bot.emojis, name="x_")
-    if isinstance(error, MissingPermissions):
-        await ctx.send(f"{str(emoji)} Nincs hozzá jogod!")
-    if isinstance(error, MissingRequiredArgument):
-        embed=discord.Embed(title="Helytelen használat!",description="Helyes használat: `~rem_money [felhasználó említés] (mennyiség)`" ,color=discord.Colour.red(),timestamp=datetime.datetime.utcnow()
-    )
-        embed.set_author(name="BalintEssentials",url="https://balintcore.tk",icon_url="https://cdn.discordapp.com/avatars/731101356383010817/db6c1448ff41844a95374a7b357797d9.png?size=256")
-        embed.set_footer(text="BalintEssentials - Hiba", icon_url="https://cdn.discordapp.com/avatars/731101356383010817/db6c1448ff41844a95374a7b357797d9.png?size=256")
-        await ctx.send(embed=embed)
 
 bot.login(token)        
